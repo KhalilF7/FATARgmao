@@ -1,6 +1,12 @@
 from django.db import models
 
 # Create your models here.
+
+class pdg(models.Model):
+    nom = models.CharField(max_length=200,blank=True)
+    prenom = models.CharField(max_length=200,blank=True)  
+    login = models.CharField(max_length=200,blank=True)
+    password = models.CharField(max_length=200,blank=True)  
 class branche(models.Model):
     code = models.CharField(max_length=200,primary_key=True)
     nom = models.TextField(null=True,blank=True)
@@ -9,7 +15,7 @@ class branche(models.Model):
     email = models.TextField(blank=True)
     telephone = models.BigIntegerField(blank=True)
     fax = models.BigIntegerField(blank=True)
-
+    pdg = models.ForeignKey(pdg , on_delete=models.CASCADE ,null=True, blank=True)
 class contract(models.Model):
     contractID = models.CharField(max_length=100,primary_key=True)
     contactType = models.TextField(null=True)
