@@ -43,4 +43,4 @@ class AuthUser(APIView):
             elif techninienSerializer(usertech).data["password"]==password:
                 return Response({"user":"tech","data":techninienSerializer(usertech).data})
             else:
-                return Responses({"message":"password incorrect "})
+                return Response({"message":"password incorrect "})
