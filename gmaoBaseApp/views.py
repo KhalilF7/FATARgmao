@@ -1,11 +1,15 @@
+from ast import Return
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny
 from .models import *
 from .serializers import *
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 class userView(APIView):
     def get(self,request):
@@ -21,6 +25,8 @@ class userView(APIView):
 
 
 class AuthUser(APIView):
+    permission_classes = (AllowAny,)
+    @csrf_exempt
     def post(self,request):
         loginD = request.data['login']
         password = request.data['password']
@@ -28,7 +34,7 @@ class AuthUser(APIView):
         usertech=technicine.objects.filter(username=loginD).first()
         userRes=responsable.objects.filter(username=loginD).first()
         if userpdg is None and userRes is None and usertech is None:
-            raise AuthenticationFailed("no user found")
+            return Response({"message":"no user found"})
         else:
             if pdgSerializer(userpdg).data['password']==password:
                 return Response({"user":"pdg","data":pdgSerializer(userpdg).data})
@@ -37,4 +43,4 @@ class AuthUser(APIView):
             elif techninienSerializer(usertech).data["password"]==password:
                 return Response({"user":"tech","data":techninienSerializer(usertech).data})
             else:
-                raise AuthenticationFailed("unvalide password")
+                return Responses({"message":"password incorrect "})
