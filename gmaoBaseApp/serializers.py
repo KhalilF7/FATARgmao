@@ -39,3 +39,5 @@ class formationSerielizer(serializers.ModelSerializer):
     class Meta:
         model=formation
         fields='__all__'
+
+
