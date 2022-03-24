@@ -1,3 +1,5 @@
+import re
+from traceback import print_tb
 from uuid import  uuid4
 from django.http import Http404
 from rest_framework.response import Response
@@ -22,13 +24,13 @@ class AuthUser(APIView):
             return Response({"message":"Aucun utilisateur trouver"})
         else:
             if pdgSerializer(userpdg).data['password']==password:
-                data={"userID":pdgSerializer(userpdg).data['id'],"profile":"pdg"}
+                data={"userID":pdgSerializer(userpdg).data['id'],"profile":"pdg",}
                 return Response({"data":data})
             elif responsableSerializer(userRes).data["password"]==password:
-                data = {"userID":responsableSerializer(userRes).data['matricule'],"profile":"res"}
+                data = {"userID":responsableSerializer(userRes).data['matricule'],"profile":"res","branche":responsableSerializer(userRes).data['branche']}
                 return Response({"data":data})
             elif techninienSerializer(usertech).data["password"]==password:
-                data = {"userID":techninienSerializer(usertech).data['matricule'],"profile":"tech"}
+                data = {"userID":techninienSerializer(usertech).data['matricule'],"profile":"tech","branche":responsableSerializer(userRes).data['branche']}
                 return Response({"data":data})
             else:
                 return Response({"message":"Mot de passe incorrect"})
@@ -44,8 +46,6 @@ class branchesApi(APIView):
             return Response({"message":"no row found"})
 
 class ResponsablesApi(APIView):
-    @csrf_exempt    
-
     def get(self,request):
         try:
             responsableSer = responsableSerializer(responsable.objects.all(),many=True)
@@ -75,7 +75,8 @@ class ResponsableApi(APIView):
             raise Http404
     def put(self,request,matricule):
         try:
-            responsableSer = responsableSerializer(responsable.objects.get(matricule=matricule),data=request.data)
+            res=responsable.objects.get(matricule=matricule)
+            responsableSer = responsableSerializer(res,data=request.data)
             if responsableSer.is_valid():
                 responsableSer.save()
                 return Response(responsableSer.data)
@@ -84,7 +85,51 @@ class ResponsableApi(APIView):
     def delete(self,request,matricule):
         try:
             respon = responsable.objects.get(matricule=matricule)
-            respon.delete()
+            print(respon.delete())
+            return Response({"message":"deleted"})
+        except:
+            return Response({"message":"error"}).status_code(404)
+
+
+class TechniciensApi(APIView):
+    def get(self,request):
+        try:
+            techSer = techninienSerializer(technicine.objects.all(),many=True)
+            return Response({"technicines":techSer.data})
+        except:
+            return Response({"Error":"somthing went wrong"})
+
+    def post(self,request):
+        try:
+            techSer = techninienSerializer(data=request.data)
+
+            if techSer.is_valid():
+                techSer.save()
+            return Response(techSer.data)
+        except :
+            return Response({"message":"somthing want wrong"})
+
+
+class TechnicienApi(APIView):
+    def get(self,request,matricule):
+        try:
+            techninienSer = techninienSerializer(technicine.objects.get(matricule=matricule))
+            return Response({"responsable":techninienSer.data})
+        except:
+            raise Http404
+    def put(self,request,matricule):
+        try:
+            tech=technicine.objects.get(matricule=matricule)
+            techninienSer = techninienSerializer(tech,data=request.data)
+            if techninienSer.is_valid():
+                techninienSer.save()
+                return Response(techninienSer.data)
+        except:
+            return Response(techninienSer.errors)
+    def delete(self,request,matricule):
+        try:
+            tech = technicine.objects.get(matricule=matricule)
+            print(tech.delete())
             return Response({"message":"deleted"})
         except:
             return Response({"message":"error"}).status_code(404)

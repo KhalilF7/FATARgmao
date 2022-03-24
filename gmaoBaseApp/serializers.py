@@ -29,15 +29,3 @@ class contractSerializer(serializers.ModelSerializer):
     class Meta:
         model=contract
         fields='__all__'
-
-class diplomeSerializer(serializers.ModelField):
-    class Meta:
-        model=diplome
-        fields='__all__'
-
-class formationSerielizer(serializers.ModelSerializer):
-    class Meta:
-        model=formation
-        fields='__all__'
-
-
