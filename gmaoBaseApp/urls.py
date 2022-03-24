@@ -8,6 +8,8 @@ urlpatterns = [
     path('responsables',ResponsablesApi.as_view()),
     path('responsable/<str:matricule>',ResponsableApi.as_view()),
     path('techniciens',TechniciensApi.as_view()),
-    path('technicien/<str:matricule>',TechnicienApi.as_view())
+    path('technicien/<str:matricule>',TechnicienApi.as_view()),
+    path('ateliers',AteliersApi.as_view()),
+    path('atelier/<str:code>',AtelierApi.as_view())
 ]
 

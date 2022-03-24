@@ -1,6 +1,9 @@
 from django.db import models
 
 # Create your models here.
+class Atelier(models.Model):
+    idAtelier = models.AutoField(primary_key=True)
+    nomAtelier = models.TextField(blank=False)
 
 class pdg(models.Model):
     nom = models.CharField(max_length=200,blank=True)
@@ -15,13 +18,7 @@ class branche(models.Model):
     email = models.TextField(blank=True)
     telephone = models.BigIntegerField(blank=True)
     fax = models.BigIntegerField(blank=True)
-    pdg = models.ForeignKey(pdg , on_delete=models.CASCADE ,null=True, blank=True)
-class contract(models.Model):
-    contractID = models.CharField(max_length=100,primary_key=True)
-    contactType = models.TextField(null=True)
-    dateDebut = models.DateField(null=True)
-    dateFin = models.DateField(null=True)
-    contact = models.FileField(null=True)    
+    pdg = models.ForeignKey(pdg , on_delete=models.CASCADE ,null=True, blank=True) 
 
 class utilisateur(models.Model):
     matricule = models.CharField(max_length=20,blank=True)
@@ -48,3 +45,4 @@ class technicine(utilisateur):
     suppheurePrice = models.IntegerField(null=True,blank=True)
     isResponsableMaintenance = models.BooleanField(default=False)
     isResponsableProduction = models.BooleanField(default=False)
+    atelier = models.ForeignKey(Atelier,on_delete=models.CASCADE,null=True,blank=True)

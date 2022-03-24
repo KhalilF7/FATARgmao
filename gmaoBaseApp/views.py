@@ -129,7 +129,48 @@ class TechnicienApi(APIView):
     def delete(self,request,matricule):
         try:
             tech = technicine.objects.get(matricule=matricule)
-            print(tech.delete())
+            tech.delete()
             return Response({"message":"deleted"})
         except:
             return Response({"message":"error"}).status_code(404)
+
+class AteliersApi(APIView):
+    def get(self,request):
+        try:
+            ateliers = atelierSerializer(Atelier.objects.all(),many=True)
+            return Response(ateliers.data)
+        except:
+            return Response({"message":"somting went wrong"})
+    
+    def post(self,request):
+        try:
+            atelierSer = atelierSerializer(data=request.data)
+            if(atelierSer.is_valid()):
+                atelierSer.save()
+                return Response(atelierSer.data)
+        except:
+            return Response({"message":"somting went wrong "})
+class AtelierApi(APIView):
+    def get(self,request,code):
+        try:
+            atelier = atelierSerializer(Atelier.objects.get(idAtelier=code))
+            return Response(atelier)
+        except:
+            return Response({"message":"somting went wrong"})
+    def put(self,request,code):
+        try:
+            atelier= Atelier.objects.get(idAtelier=code)
+            atelierSer = atelierSerializer(atelier,data=request.data)
+            if(atelierSer.is_valid()):
+                atelierSer.save()
+                return Response(atelierSer.data)
+        except:
+            return Response({"message":"somting went wrong"})
+    def delete(self,request,code):
+        try:
+            atelier=Atelier.objects.get(idAtelier=code)
+            atelier.delete()
+            return Response({"message":"deleted"})
+        except:
+            return Response({"message":"somting went wrong"})
+        

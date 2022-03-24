@@ -25,7 +25,7 @@ class brancheSerializer(serializers.ModelSerializer):
         model=branche
         fields='__all__'
 
-class contractSerializer(serializers.ModelSerializer):
+class atelierSerializer(serializers.ModelSerializer):
     class Meta:
-        model=contract
+        model=Atelier
         fields='__all__'
