@@ -10,6 +10,6 @@ urlpatterns = [
     path('techniciens',TechniciensApi.as_view()),
     path('technicien/<str:matricule>',TechnicienApi.as_view()),
     path('ateliers',AteliersApi.as_view()),
-    path('atelier/<str:code>',AtelierApi.as_view())
+    path('atelier/<int:code>',AtelierApi.as_view())
 ]
 

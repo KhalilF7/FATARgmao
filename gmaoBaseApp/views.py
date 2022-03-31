@@ -16,20 +16,20 @@ class AuthUser(APIView):
     @csrf_exempt
     def post(self,request):
         loginD = request.data['login']
-        password = request.data['password']
+        motDePasse = request.data['motDePasse']
         userpdg=pdg.objects.filter(login=loginD).first()
-        usertech=technicine.objects.filter(username=loginD).first()
-        userRes=responsable.objects.filter(username=loginD).first()
+        usertech=technicine.objects.filter(login=loginD).first()
+        userRes=responsable.objects.filter(login=loginD).first()
         if userpdg is None and userRes is None and usertech is None:
             return Response({"message":"Aucun utilisateur trouver"})
         else:
-            if pdgSerializer(userpdg).data['password']==password:
+            if pdgSerializer(userpdg).data['motDePasse']==motDePasse:
                 data={"userID":pdgSerializer(userpdg).data['id'],"profile":"pdg",}
                 return Response({"data":data})
-            elif responsableSerializer(userRes).data["password"]==password:
+            elif responsableSerializer(userRes).data["motDePasse"]==motDePasse:
                 data = {"userID":responsableSerializer(userRes).data['matricule'],"profile":"res","branche":responsableSerializer(userRes).data['branche']}
                 return Response({"data":data})
-            elif techninienSerializer(usertech).data["password"]==password:
+            elif techninienSerializer(usertech).data["motDePasse"]==motDePasse:
                 data = {"userID":techninienSerializer(usertech).data['matricule'],"profile":"tech","branche":responsableSerializer(userRes).data['branche']}
                 return Response({"data":data})
             else:
@@ -154,7 +154,7 @@ class AtelierApi(APIView):
     def get(self,request,code):
         try:
             atelier = atelierSerializer(Atelier.objects.get(idAtelier=code))
-            return Response(atelier)
+            return Response(atelier.data)
         except:
             return Response({"message":"somting went wrong"})
     def put(self,request,code):
