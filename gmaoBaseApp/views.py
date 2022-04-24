@@ -189,7 +189,7 @@ class MachinesApi(APIView):
         try:
             machineSer=machinesSerializer(Machines.objects.all(),many=True)
             return Response(machineSer.data)
-        except :
+        except Exception as e  :
             return Response({"error":"somting went wrong","exe":str(e)})
 
 class MachineApi(APIView):
