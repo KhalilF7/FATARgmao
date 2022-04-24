@@ -1,6 +1,7 @@
-from urllib.parse import urlparse
 from django.urls import path
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('auth',AuthUser.as_view()),
@@ -10,6 +11,9 @@ urlpatterns = [
     path('techniciens',TechniciensApi.as_view()),
     path('technicien/<str:matricule>',TechnicienApi.as_view()),
     path('ateliers',AteliersApi.as_view()),
-    path('atelier/<int:code>',AtelierApi.as_view())
-]
+    path('atelier/<int:code>',AtelierApi.as_view()),
+    path('machines',MachinesApi.as_view()),
+    path('machine/<str:code>',MachineApi.as_view()),
+    path('categoriMachines',CathergorieMachinesApi.as_view())
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

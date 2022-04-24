@@ -1,6 +1,7 @@
-import re
-from traceback import print_tb
-from uuid import  uuid4
+
+import os
+from platform import machine
+from django.conf import settings
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -173,4 +174,47 @@ class AtelierApi(APIView):
             return Response({"message":"deleted"})
         except:
             return Response({"message":"somting went wrong"})
-        
+
+
+class MachinesApi(APIView):
+    def post(self,request):
+        try:
+            machineSer=machinesSerializer(data=request.data)
+            if(machineSer.is_valid()):
+                machineSer.save()
+                return Response(machineSer.data)
+        except Exception as e  :
+            return Response({"erreur":"somthing went wrong ","exe":str(e)})
+    def get(self,request):
+        try:
+            machineSer=machinesSerializer(Machines.objects.all(),many=True)
+            return Response(machineSer.data)
+        except :
+            return Response({"error":"somting went wrong","exe":str(e)})
+
+class MachineApi(APIView):
+    def get(self,request,code):
+        try:
+            machine = machinesSerializer(Machines.objects.get(code=code))
+            return Response(machine.data)
+        except:
+            return Response({"message":"somting went wrong"})
+    def delete(self,request,code):
+        try:    
+            machine = Machines.objects.get(code=code)
+            file = machine.image
+            machine.delete()
+            print(file)
+            if(file):
+                os.remove(os.path.join(settings.MEDIA_ROOT,str(file)))
+            return Response({"message":"deleted"})
+        except Exception as e :
+            return Response({"erreur":"somting went wrong ","exe":str(e)})
+
+class CathergorieMachinesApi(APIView):
+    def get(self,request):
+        try:
+            cathegorieMachineSer=cathegorieMachineSerializer(CategoriesMachines.objects.all(),many=True)
+            return Response(cathegorieMachineSer.data)
+        except:
+            return Response({"message":"somting went wrong"})

@@ -29,3 +29,14 @@ class atelierSerializer(serializers.ModelSerializer):
     class Meta:
         model=Atelier
         fields='__all__'
+
+class machinesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Machines
+        fields='__all__'
+
+class cathegorieMachineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CategoriesMachines
+        fields='__all__'
+        
