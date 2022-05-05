@@ -50,7 +50,7 @@ class ResponsablesApi(APIView):
     def get(self,request):
         try:
             responsableSer = responsableSerializer(responsable.objects.all(),many=True)
-            return Response({"responsables":responsableSer.data})
+            return Response(responsableSer.data)
         except:
             raise Exception
                
@@ -71,7 +71,7 @@ class ResponsableApi(APIView):
     def get(self,request,matricule):
         try:
             responsableSer = responsableSerializer(responsable.objects.get(matricule=matricule))
-            return Response({"responsable":responsableSer.data})
+            return Response(responsableSer.data)
         except:
             raise Http404
     def put(self,request,matricule):
@@ -96,7 +96,7 @@ class TechniciensApi(APIView):
     def get(self,request):
         try:
             techSer = techninienSerializer(technicine.objects.all(),many=True)
-            return Response({"technicines":techSer.data})
+            return Response(techSer.data)
         except:
             return Response({"Error":"somthing went wrong"})
 
@@ -115,7 +115,7 @@ class TechnicienApi(APIView):
     def get(self,request,matricule):
         try:
             techninienSer = techninienSerializer(technicine.objects.get(matricule=matricule))
-            return Response({"responsable":techninienSer.data})
+            return Response(techninienSer.data)
         except:
             raise Http404
     def put(self,request,matricule):
@@ -218,3 +218,36 @@ class CathergorieMachinesApi(APIView):
             return Response(cathegorieMachineSer.data)
         except:
             return Response({"message":"somting went wrong"})
+
+class InterventionCurativesApi(APIView):
+    def post(self,request):
+        try:
+            intevetionCurativeSer=InterventionCurativeSerializer(data=request.data)
+            if(intevetionCurativeSer.is_valid()):
+                intevetionCurativeSer.save()
+            print(intevetionCurativeSer.data)
+            return Response(intevetionCurativeSer.is_valid())
+        except Exception as e :
+            return Response({"message":"somting went wrong","error":str(e)})
+    def get(self,request):
+        try:
+            InterventionCurativeSer=InterventionCurativeSerializer(IntervenctionCurative.objects.all(),many=True)
+            return Response(InterventionCurativeSer.data)
+        except Exception as e :
+            return Response({"message":"somting went wrong ","error":str(e)})
+
+class sousTraitencesApi(APIView):
+    def get(self,request):
+        try:
+            sousTraitenceSer = sousTraitenceSerializer(sousTraitence.objects.all(),many=True)
+            return Response(sousTraitenceSer.data)
+        except Exception as e :
+            return Response({'message':"somting went wrong","error":str(e)})
+    def post(self,request):
+        try:
+            sousTraitenceSer = sousTraitenceSerializer(data=request.data)
+            if(sousTraitenceSer.is_valid()):
+                sousTraitenceSer.save()
+                return Response(sousTraitenceSer.data)
+        except Exception as e :
+            return Response({"message":"somting went wrong","error":str(e)})

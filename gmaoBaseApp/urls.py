@@ -14,6 +14,8 @@ urlpatterns = [
     path('atelier/<int:code>',AtelierApi.as_view()),
     path('machines',MachinesApi.as_view()),
     path('machine/<str:code>',MachineApi.as_view()),
-    path('categoriMachines',CathergorieMachinesApi.as_view())
+    path('categoriMachines',CathergorieMachinesApi.as_view()),
+    path('sousTraitences',sousTraitencesApi.as_view()),
+    path('IntevetionCuratives',InterventionCurativesApi.as_view())
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

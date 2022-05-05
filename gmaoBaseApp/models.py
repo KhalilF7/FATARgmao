@@ -65,7 +65,7 @@ class technicine(utilisateur):
     atelier = models.ForeignKey(Atelier,on_delete=models.RESTRICT,null=True,blank=True)
 
 class Intervention(models.Model):
-    technicine = models.ManyToManyField(technicine)
+    technicine = models.ForeignKey(technicine,on_delete=models.RESTRICT,null=True)
     machine = models.ForeignKey(Machines,on_delete=models.RESTRICT)
     class Meta():
         abstract=True
@@ -90,12 +90,13 @@ class categoriePreventif(models.Model):
 class IntervenctionCurative(Intervention):
     codeCuratif = models.CharField(max_length=200,primary_key=True)
     dateRapport = models.DateTimeField()
-    sympthomes = ArrayField(models.TextField(blank=True))
-    dateDebutAction=models.DateTimeField(blank=True)
-    diagnostique = ArrayField(models.TextField(blank=True))
-    dateFinAction = models.DateTimeField(blank=True)
-    dateCloture = models.DateTimeField(blank=True)
-    typeDePann = models.TextField(blank=True)
+    Sympthomes = ArrayField(models.TextField(blank=True))
+    dateDebutAction=models.DateTimeField(blank=True,null=True)
+    diagnostique =models.TextField(blank=True,null=True)
+    dateFinAction = models.DateTimeField(blank=True,null=True)
+    dateCloture = models.DateTimeField(blank=True,null=True)
+    TypeDePanne =ArrayField(models.TextField(blank=True))
+    etatInterventions = models.TextField(blank=True)
     sousTraitence = models.ForeignKey(sousTraitence,on_delete=models.RESTRICT,null=True,blank=True)
 
 class InterventionPreventive(Intervention):
