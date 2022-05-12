@@ -39,7 +39,7 @@ class branche(models.Model):
     email = models.TextField(blank=True)
     telephone = models.BigIntegerField(blank=True)
     fax = models.BigIntegerField(blank=True)
-    pdg = models.ForeignKey(pdg , on_delete=models.RESTRICT ,null=True, blank=True) 
+    pdg = models.ForeignKey(pdg , on_delete=models.CASCADE ,null=True, blank=True) 
 
 
 class utilisateur(models.Model):
@@ -62,11 +62,11 @@ class technicine(utilisateur):
     suppheurePrice = models.IntegerField(null=True,blank=True)
     isResponsableMaintenance = models.BooleanField(default=False)
     isResponsableProduction = models.BooleanField(default=False)
-    atelier = models.ForeignKey(Atelier,on_delete=models.RESTRICT,null=True,blank=True)
+    atelier = models.ForeignKey(Atelier,on_delete=models.CASCADE,null=True,blank=True)
 
 class Intervention(models.Model):
-    technicine = models.ForeignKey(technicine,on_delete=models.RESTRICT,null=True)
-    machine = models.ForeignKey(Machines,on_delete=models.RESTRICT)
+    technicine = models.ForeignKey(technicine,on_delete=models.CASCADE,null=True)
+    machine = models.ForeignKey(Machines,on_delete=models.CASCADE)
     class Meta():
         abstract=True
 
@@ -90,12 +90,12 @@ class categoriePreventif(models.Model):
 class IntervenctionCurative(Intervention):
     codeCuratif = models.CharField(max_length=200,primary_key=True)
     dateRapport = models.DateTimeField()
-    Sympthomes = ArrayField(models.TextField(blank=True))
+    Sympthomes = ArrayField(models.TextField(blank=True),blank=True)
     dateDebutAction=models.DateTimeField(blank=True,null=True)
     diagnostique =models.TextField(blank=True,null=True)
     dateFinAction = models.DateTimeField(blank=True,null=True)
     dateCloture = models.DateTimeField(blank=True,null=True)
-    TypeDePanne =ArrayField(models.TextField(blank=True))
+    TypeDePanne =ArrayField(models.TextField(blank=True),blank=True)
     etatInterventions = models.TextField(blank=True)
     sousTraitence = models.ForeignKey(sousTraitence,on_delete=models.RESTRICT,null=True,blank=True)
 
@@ -115,6 +115,6 @@ class pieceDeRechange(models.Model):
     nomPiece=models.TextField(blank=True)
     quantite=models.BigIntegerField(blank=True)
     prixTotale=models.FloatField(blank=True)
-    detailDePiece=models.ForeignKey(magasin,null=True,on_delete=models.RESTRICT)
-    cout=models.ForeignKey(cout,null=True,on_delete=models.RESTRICT)
+    detailDePiece=models.ForeignKey(magasin,null=True,on_delete=models.CASCADE)
+    cout=models.ForeignKey(cout,null=True,on_delete=models.CASCADE)
  
