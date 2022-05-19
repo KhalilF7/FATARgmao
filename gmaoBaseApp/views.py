@@ -1,4 +1,3 @@
-
 import os
 from platform import machine
 from django.conf import settings
@@ -6,7 +5,6 @@ from django.http import Http404, HttpResponseBadRequest
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
-
 from FATARgmao.settings import MEDIA_ROOT
 from .models import *
 from .serializers import *
@@ -207,7 +205,6 @@ class MachineApi(APIView):
             if(machinSer.is_valid()):
                 machinSer.save()
                 return Response(machinSer.data)
-            print(machinSer.data)
             return Response(machinSer.errors)
         except Exception as e :
             return Response({"message":"somting went wrong","error":str(e)})
@@ -242,16 +239,28 @@ class InterventionCurativesApi(APIView):
             return Response({"message":"somting went wrong","error":str(e)})
     def get(self,request):
         try:
-            InterventionCurativeSer=InterventionCurativeSerializer(IntervenctionCurative.objects.all(),many=True)
+            InterventionCurativeSer=InterventionCurativeSerializer(IntervenctionCurative.objects.all().reverse(),many=True)
             return Response(InterventionCurativeSer.data)
         except Exception as e :
             return Response({"message":"somting went wrong ","error":str(e)})
-
+    
 class InterventionsCuratifApi(APIView):
     def get(self,request,code):
         try:
             interventionSer = InterventionCurativeSerializer(IntervenctionCurative.objects.get(codeCuratif=code))
             return Response(interventionSer.data)
+        except Exception as e :
+            return Response({"message":"somthing went wrong","error":str(e)})
+    def patch(self,request,code):
+        try:
+            intervention = IntervenctionCurative.objects.get(codeCuratif=code)
+            interSer = InterventionCurativeSerializer(intervention,data=request.data)
+            if(interSer.is_valid()):
+                interSer.save()
+                print(interSer.is_valid())
+                return Response(interSer.data)
+            print(interSer.data)
+            return Response(interSer.errors)
         except Exception as e :
             return Response({"message":"somthing went wrong","error":str(e)})
 class sousTraitencesApi(APIView):
@@ -267,5 +276,12 @@ class sousTraitencesApi(APIView):
             if(sousTraitenceSer.is_valid()):
                 sousTraitenceSer.save()
                 return Response(sousTraitenceSer.data)
+        except Exception as e :
+            return Response({"message":"somting went wrong","error":str(e)})
+class sousTraitenceApi(APIView):
+    def get(self,request,code):
+        try:
+            sousTraitenceSer=sousTraitenceSerializer(sousTraitence.objects.get(id=code))
+            return Response(sousTraitenceSer.data)
         except Exception as e :
             return Response({"message":"somting went wrong","error":str(e)})

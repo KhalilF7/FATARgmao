@@ -16,7 +16,8 @@ urlpatterns = [
     path('machine/<str:code>',MachineApi.as_view()),
     path('categoriMachines',CathergorieMachinesApi.as_view()),
     path('sousTraitences',sousTraitencesApi.as_view()),
-    path('IntevetionCuratives',InterventionCurativesApi.as_view()),
-    path('IntervetnionCurative/<str:code>',InterventionsCuratifApi.as_view())
+    path('sousTraitence/<str:code>',sousTraitenceApi.as_view()),
+    path('InteventionCuratives',InterventionCurativesApi.as_view()),
+    path('InterventionCurative/<str:code>',InterventionsCuratifApi.as_view())
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
