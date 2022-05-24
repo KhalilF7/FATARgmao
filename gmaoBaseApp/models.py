@@ -65,15 +65,11 @@ class technicine(utilisateur):
     atelier = models.ForeignKey(Atelier,on_delete=models.CASCADE,null=True,blank=True)
 
 class Intervention(models.Model):
-    technicine = models.ForeignKey(technicine,on_delete=models.CASCADE,null=True)
-    machine = models.ForeignKey(Machines,on_delete=models.CASCADE)
+    technicines = models.ManyToManyField(technicine,blank=True,default=[])
+    machine=models.ForeignKey(Machines,on_delete=models.RESTRICT,null=True,blank=True)
     class Meta():
         abstract=True
 
-class magasin(models.Model):
-    article=models.TextField(blank=True)
-    quantite=models.PositiveBigIntegerField(blank=True)
-    prix=models.FloatField(blank=True)
 
 
 class sousTraitence(models.Model):
@@ -83,9 +79,7 @@ class sousTraitence(models.Model):
     telephone= models.BigIntegerField(blank=True)
     fax= models.BigIntegerField(blank=True)
 
-class categoriePreventif(models.Model):
-    NomAction=models.TextField(blank=True)
-    
+
 
 class IntervenctionCurative(Intervention):
     codeCuratif = models.CharField(max_length=200,primary_key=True)
@@ -101,20 +95,20 @@ class IntervenctionCurative(Intervention):
 
 class InterventionPreventive(Intervention):
     codePreventif= models.CharField(max_length=200,primary_key=True)
-    date = models.DateField()
-    Initials = models.TextField(blank=True)
-    planIntervention=models.ForeignKey(categoriePreventif,on_delete=models.RESTRICT)
+    date = models.DateTimeField(null=True,blank=True)
+    Description=models.TextField(blank=True,null=True)
+    
 
 class cout(models.Model):
     typeDeCout=models.TextField(blank=True)
-    cout=models.FloatField(blank=True)
+    Cout=models.FloatField(blank=True)
     Curative=models.ForeignKey(IntervenctionCurative,on_delete=models.RESTRICT,null=True,blank=True)
     Prevetive=models.ForeignKey(InterventionPreventive,on_delete=models.RESTRICT,null=True,blank=True)
    
 class pieceDeRechange(models.Model):
     nomPiece=models.TextField(blank=True)
-    quantite=models.BigIntegerField(blank=True)
-    prixTotale=models.FloatField(blank=True)
-    detailDePiece=models.ForeignKey(magasin,null=True,on_delete=models.CASCADE)
-    cout=models.ForeignKey(cout,null=True,on_delete=models.CASCADE)
+    quantite=models.IntegerField(blank=True)
+    PrixUnitaire=models.FloatField(blank=True)
+    Curative=models.ForeignKey(IntervenctionCurative,on_delete=models.RESTRICT,null=True,blank=True)
+    Prevetive=models.ForeignKey(InterventionPreventive,on_delete=models.RESTRICT,null=True,blank=True)
  

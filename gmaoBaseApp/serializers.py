@@ -59,16 +59,8 @@ class pieceDeRechargeSerializer(serializers.ModelSerializer):
         model=pieceDeRechange
         fields='__all__'
     
-class categoriePrevetinveSerialzer(serializers.ModelSerializer):
-    class Meta:
-        model=categoriePreventif
-        fields='__all__'
 
 class sousTraitenceSerializer(serializers.ModelSerializer):
     class Meta:
         model=sousTraitence
-        fields='__all__'
-class magasinSerialzer(serializers.ModelSerializer):
-    class Meta:
-        model=magasin
         fields='__all__'
