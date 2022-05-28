@@ -46,7 +46,15 @@ class branchesApi(APIView):
             return Response({"branches":brancheSer.data})
         except:
             return Response({"message":"no row found"})
-
+    def post(self,request):
+        try:
+            brancheSer = brancheSerializer(data=request.data)
+            if(brancheSer.is_valid()):
+                brancheSer.save()
+                return Response(brancheSer.data)
+            return Response(brancheSer.error_messages())
+        except Exception as e :
+            return Response({"message":str(e)})
 class ResponsablesApi(APIView):
     def get(self,request):
         try:
