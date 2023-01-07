@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'FATARgmao.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'FatarIntSARL',
+        'NAME': 'postgres',
         'USER':'postgres',
         'PASSWORD':'postgres',
         'HOST':'127.0.0.1',
